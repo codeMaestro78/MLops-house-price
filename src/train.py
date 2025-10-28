@@ -1,7 +1,8 @@
 import argparse
+from os import name
 import mlflow
 from sklearn.model_selection import train_test_split
-from sklearn.metrics import root_mean_squared_error,mean_squared_error
+from sklearn.metrics import root_mean_squared_error
 from src.data import load_data
 from src.preprocess import build_preprocessing_pipeline
 from src.model import build_model_pipeline
@@ -23,11 +24,11 @@ def main():
     preprocessor= build_preprocessing_pipeline(X_train)
     pipeline=build_model_pipeline(preprocessor)
 
-    mlflow.set_experiment(args.expermient_name)
+    mlflow.set_experiment(args.experiment_name)
     with mlflow.start_run() as run:
         pipeline.fit(X_train,y_train)
         y_pred=pipeline.predict(X_val)
-        rmse=root_mean_squared_error(y_val,y_pred,squared=False)
+        rmse=root_mean_squared_error(y_val,y_pred)
         mlflow.log_metric("rmse",rmse)
         mlflow.log_param("n_estimators",200)
 

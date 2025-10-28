@@ -4,7 +4,7 @@ from sklearn.datasets import fetch_california_housing
 
 def load_data(as_frame=True):
     data=fetch_california_housing(as_frame=True)
-    X=data.frame.drop(columns=["MedHoueseVal"]) if as_frame else data.data
+    X=data.frame.drop(columns=["MedHouseVal"]) if as_frame else data.data
     y=data.frame["MedHouseVal"] if as_frame else data.target
     return X,y
 
