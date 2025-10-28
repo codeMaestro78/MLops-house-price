@@ -47,11 +47,25 @@ An end-to-end MLOps project for house price regression using scikit-learn, MLflo
 
 ## Docker Deployment
 
+### Option 1: Full stack with docker-compose
+
 ```bash
 docker-compose up --build
 ```
 
 This starts MLflow server on port 5000 and API on port 8000.
+
+### Option 2: API only
+
+```bash
+# Build the image
+docker build -t house-price-api .
+
+# Run the container
+docker run -d -p 8000:8000 --name house-price house-price-api
+```
+
+Note: This option only runs the API. You'll need to start MLflow server separately for model tracking.
 
 ## Testing
 
