@@ -24,3 +24,25 @@ jobs:
       - name: Run Tests
         run: |
         pytest -q
+
+  build-and-deploy:
+    if : github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    needs: test
+     steps:
+      - uses: actions/checkout@v4
+      - name: Build Docker image
+        run: |
+          docker build -t ${{ github.repository }}:latest .
+      - name: Login to DockerHub
+        if: secrets.DOCKERHUB_USERNAME
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+      - name: Push to DockerHub
+        if: secrets.DOCKERHUB_USERNAME
+        run: |
+          docker tag ${{ github.repository }}:latest ${{ secrets.DOCKERHUB_USERNAME }}/${{ github.repository }}:latest
+          docker push ${{ secrets.DOCKERHUB_USERNAME }}/${{ github.repository }}:latest
+
