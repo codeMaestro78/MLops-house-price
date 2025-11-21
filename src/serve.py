@@ -89,3 +89,6 @@ async def predict(req: PredictRequest):
         traceback.print_exc()
         return {"predictions": []}
 
+if __name__ == "__main__":
+    import uvicorn
+    uvicorn.run(app, host="0.0.0.0", port=8000)
